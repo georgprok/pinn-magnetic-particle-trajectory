@@ -15,7 +15,7 @@ class Trainer:
         os.makedirs("results", exist_ok=True)
         self.log_path = os.path.join("results", "train_log.txt")
 
-        # очищаем лог в начале нового запуска
+        # clear the log at the start of a new run
         with open(self.log_path, "w", encoding="utf-8") as f:
             f.write("Training log\n")
             f.write("=" * 80 + "\n")

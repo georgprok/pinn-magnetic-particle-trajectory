@@ -4,12 +4,12 @@ import torch
 
 def euler_integrate_trajectory(v0, config, device):
     """
-    Интегрирует траекторию частицы методом Эйлера.
+    Integrates the particle trajectory using the Euler method.
 
-    Состояние:
+    State:
         x, y, vx, vy
 
-    Уравнения:
+    Equations:
         dx/dt  = vx
         dy/dt  = vy
         dvx/dt = (q * Bz / m) * vy
@@ -24,7 +24,7 @@ def euler_integrate_trajectory(v0, config, device):
     n_steps = config.shooting_steps
     dt = T / n_steps
 
-    # начальное состояние
+    # initial state
     x = torch.tensor(x0, dtype=torch.float32, device=device)
     y = torch.tensor(y0, dtype=torch.float32, device=device)
     vx = v0[0]
@@ -55,8 +55,8 @@ def euler_integrate_trajectory(v0, config, device):
 
 def shooting_loss(v0, config, device):
     """
-    Loss shooting-метода:
-    расстояние между концом траектории и точкой B.
+    Shooting method loss:
+    distance between the trajectory endpoint and point B.
     """
     xs, ys = euler_integrate_trajectory(v0, config, device)
 
@@ -73,7 +73,7 @@ def shooting_loss(v0, config, device):
 
 def solve_shooting(config, device, log_path="results/shooting_log.txt"):
     """
-    Подбирает начальную скорость v0 = (vx0, vy0) с помощью оптимизации.
+    Finds the initial velocity v0 = (vx0, vy0) via optimization.
     """
     os.makedirs("results", exist_ok=True)
 
@@ -81,7 +81,7 @@ def solve_shooting(config, device, log_path="results/shooting_log.txt"):
         f.write("Shooting log\n")
         f.write("=" * 80 + "\n")
 
-    # обучаемые параметры shooting: начальная скорость
+    # trainable shooting parameters: initial velocity
     v0 = torch.nn.Parameter(
         torch.tensor([0.5, 0.5], dtype=torch.float32, device=device)
     )
@@ -116,7 +116,7 @@ def solve_shooting(config, device, log_path="results/shooting_log.txt"):
             with open(log_path, "a", encoding="utf-8") as f:
                 f.write(msg + "\n")
 
-    # финальная траектория после оптимизации
+    # final trajectory after optimization
     with torch.no_grad():
         _, xs, ys = shooting_loss(v0, config, device)
 

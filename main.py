@@ -17,7 +17,7 @@ from utils.seed import set_seed
 
 def estimate_initial_velocity(model, device):
     """
-    Извлекает начальную скорость PINN из производных в t=0.
+    Extracts the PINN initial velocity from derivatives at t=0.
     """
     t0 = torch.tensor([[0.0]], dtype=torch.float32, device=device, requires_grad=True)
     pred0 = model(t0)
@@ -49,7 +49,7 @@ def main():
     os.makedirs("results", exist_ok=True)
 
     # -----------------------------
-    # 1. Обучение PINN
+    # 1. PINN training
     # -----------------------------
     model = MLP(hidden_dim=cfg.hidden_dim, hidden_layers=cfg.hidden_layers).to(device)
 
@@ -80,7 +80,7 @@ def main():
     print(f"vx0 = {shooting_result['vx0']:.6f}, " f"vy0 = {shooting_result['vy0']:.6f}")
 
     # -----------------------------
-    # 3. Сравнение
+    # 3. Comparison
     # -----------------------------
     plot_comparison(x_pinn, y_pinn, x_shoot, y_shoot, cfg.A, cfg.B)
 
