@@ -56,3 +56,43 @@ def plot_loss(history):
     plt.tight_layout()
     plt.savefig("results/loss.png")
     plt.close()
+
+
+def plot_shooting_loss(history):
+    epochs = [item["epoch"] for item in history]
+    loss = [item["loss"] for item in history]
+
+    plt.figure(figsize=(8, 5))
+    plt.plot(epochs, loss, label="shooting loss")
+
+    plt.yscale("log")
+    plt.xlabel("epoch")
+    plt.ylabel("loss")
+    plt.title("Shooting optimization loss")
+    plt.grid(True)
+    plt.legend()
+
+    os.makedirs("results", exist_ok=True)
+    plt.tight_layout()
+    plt.savefig("results/shooting_loss.png")
+    plt.close()
+
+
+def plot_comparison(x_pinn, y_pinn, x_shoot, y_shoot, A, B):
+    plt.figure(figsize=(6, 6))
+
+    plt.plot(x_pinn, y_pinn, label="PINN")
+    plt.plot(x_shoot, y_shoot, "--", label="Shooting")
+    plt.scatter([A[0], B[0]], [A[1], B[1]], s=80, label="A, B")
+
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.title("PINN vs Shooting")
+    plt.axis("equal")
+    plt.grid(True)
+    plt.legend()
+
+    os.makedirs("results", exist_ok=True)
+    plt.tight_layout()
+    plt.savefig("results/trajectory_comparison.png")
+    plt.close()

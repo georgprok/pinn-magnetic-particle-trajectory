@@ -2,7 +2,6 @@ import math
 
 
 class Config:
-
     # устройство
     device = "cuda"
 
@@ -25,14 +24,20 @@ class Config:
     hidden_dim = 64
     hidden_layers = 3
 
-    # обучение
+    # обучение PINN
     lr = 1e-3
-    epochs = 7000
+    epochs = 5000
     collocation_points = 256
 
     # веса loss
     bc_weight = 100.0
     phys_weight = 1.0
 
-    # вывод
+    # логирование
     print_every = 500
+
+    # shooting method
+    shooting_lr = 1e-2
+    shooting_epochs = 3000
+    shooting_steps = 400
+    shooting_print_every = 300
