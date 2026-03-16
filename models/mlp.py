@@ -1,12 +1,7 @@
-import torch
 import torch.nn as nn
 
 
 class MLP(nn.Module):
-    """
-    Простой MLP:
-    t -> [x(t), y(t)]
-    """
 
     def __init__(self, in_dim=1, hidden_dim=64, hidden_layers=3, out_dim=2):
         super().__init__()
@@ -18,7 +13,8 @@ class MLP(nn.Module):
             layers.append(nn.Tanh())
 
         layers.append(nn.Linear(hidden_dim, out_dim))
+
         self.net = nn.Sequential(*layers)
 
-    def forward(self, t: torch.Tensor) -> torch.Tensor:
+    def forward(self, t):
         return self.net(t)
