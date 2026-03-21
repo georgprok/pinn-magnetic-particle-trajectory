@@ -3,7 +3,7 @@ import torch.nn as nn
 
 class MLP(nn.Module):
 
-    def __init__(self, in_dim=1, hidden_dim=64, hidden_layers=3, out_dim=2):
+    def __init__(self, in_dim=1, hidden_dim=64, hidden_layers=3, out_dim=3):
         super().__init__()
 
         layers = [nn.Linear(in_dim, hidden_dim), nn.Tanh()]

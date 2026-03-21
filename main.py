@@ -24,16 +24,21 @@ def estimate_initial_velocity(model, device):
 
     x0 = pred0[:, 0:1]
     y0 = pred0[:, 1:2]
+    z0 = pred0[:, 2:3]
 
     vx0 = torch.autograd.grad(
         x0, t0, grad_outputs=torch.ones_like(x0), create_graph=False, retain_graph=True
     )[0].item()
 
     vy0 = torch.autograd.grad(
-        y0, t0, grad_outputs=torch.ones_like(y0), create_graph=False
+        y0, t0, grad_outputs=torch.ones_like(y0), create_graph=False, retain_graph=True
     )[0].item()
 
-    return vx0, vy0
+    vz0 = torch.autograd.grad(
+        z0, t0, grad_outputs=torch.ones_like(z0), create_graph=False
+    )[0].item()
+
+    return vx0, vy0, vz0
 
 
 def main():
@@ -52,21 +57,23 @@ def main():
     # -----------------------------
     # 1. PINN training
     # -----------------------------
-    model = MLP(hidden_dim=cfg.hidden_dim, hidden_layers=cfg.hidden_layers).to(device)
+    model = MLP(
+        hidden_dim=cfg.hidden_dim, hidden_layers=cfg.hidden_layers, out_dim=3
+    ).to(device)
 
     trainer = Trainer(model, cfg)
     history = trainer.train()
 
-    x_pinn, y_pinn = evaluate(model, cfg.T, device)
-    plot_trajectory(x_pinn, y_pinn, cfg.A, cfg.B)
+    x_pinn, y_pinn, z_pinn = evaluate(model, cfg.T, device)
+    plot_trajectory(x_pinn, y_pinn, z_pinn, cfg.A, cfg.B)
     plot_loss(history)
 
     torch.save(model.state_dict(), "results/model.pt")
 
-    vx0_pinn, vy0_pinn = estimate_initial_velocity(model, device)
+    vx0_pinn, vy0_pinn, vz0_pinn = estimate_initial_velocity(model, device)
 
     print("\nPINN initial velocity:")
-    print(f"vx0 = {vx0_pinn:.6f}, vy0 = {vy0_pinn:.6f}")
+    print(f"vx0 = {vx0_pinn:.6f}, vy0 = {vy0_pinn:.6f}, vz0 = {vz0_pinn:.6f}")
 
     # -----------------------------
     # 2. Shooting method
@@ -75,21 +82,26 @@ def main():
 
     x_shoot = shooting_result["x"]
     y_shoot = shooting_result["y"]
+    z_shoot = shooting_result["z"]
+
     plot_shooting_loss(shooting_result["history"])
-
+    plot_comparison(x_pinn, y_pinn, z_pinn, x_shoot, y_shoot, z_shoot, cfg.A, cfg.B)
     print("\nShooting initial velocity:")
-    print(f"vx0 = {shooting_result['vx0']:.6f}, " f"vy0 = {shooting_result['vy0']:.6f}")
-
-    # -----------------------------
-    # 3. Comparison
-    # -----------------------------
-    plot_comparison(x_pinn, y_pinn, x_shoot, y_shoot, cfg.A, cfg.B)
+    print(
+        f"vx0 = {shooting_result['vx0']:.6f}, " f"vy0 = {shooting_result['vy0']:.6f}",
+        f"vz0 = {shooting_result['vz0']:.6f}",
+    )
 
     pinn_end_error = (
-        (x_pinn[-1] - cfg.B[0]) ** 2 + (y_pinn[-1] - cfg.B[1]) ** 2
+        (x_pinn[-1] - cfg.B[0]) ** 2
+        + (y_pinn[-1] - cfg.B[1]) ** 2
+        + (z_pinn[-1] - cfg.B[2]) ** 2
     ) ** 0.5
+
     shoot_end_error = (
-        (x_shoot[-1] - cfg.B[0]) ** 2 + (y_shoot[-1] - cfg.B[1]) ** 2
+        (x_shoot[-1] - cfg.B[0]) ** 2
+        + (y_shoot[-1] - cfg.B[1]) ** 2
+        + (z_shoot[-1] - cfg.B[2]) ** 2
     ) ** 0.5
 
     print("\nFinal endpoint errors:")
@@ -99,11 +111,16 @@ def main():
     with open("results/comparison.txt", "w", encoding="utf-8") as f:
         f.write("PINN vs Shooting comparison\n")
         f.write("=" * 80 + "\n")
-        f.write(f"PINN initial velocity: vx0 = {vx0_pinn:.6f}, vy0 = {vy0_pinn:.6f}\n")
+        f.write(f"Physics mode: {cfg.physics_mode}\n")
+        f.write(
+            f"PINN initial velocity: "
+            f"vx0 = {vx0_pinn:.6f}, vy0 = {vy0_pinn:.6f}, vz0 = {vz0_pinn:.6f}\n"
+        )
         f.write(
             f"Shooting initial velocity: "
             f"vx0 = {shooting_result['vx0']:.6f}, "
-            f"vy0 = {shooting_result['vy0']:.6f}\n"
+            f"vy0 = {shooting_result['vy0']:.6f}, "
+            f"vz0 = {shooting_result['vz0']:.6f}\n"
         )
         f.write(f"PINN endpoint error: {pinn_end_error:.6e}\n")
         f.write(f"Shooting endpoint error: {shoot_end_error:.6e}\n")

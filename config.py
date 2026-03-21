@@ -14,8 +14,8 @@ class Config:
     Bz = 1.0
 
     # boundary conditions
-    A = (0.0, 0.0)
-    B = (1.0, 1.0)
+    A = (0.0, 0.0, 0.0)
+    B = (1.0, 1.0, 1.0)
 
     # time
     T = math.pi / 2
@@ -34,13 +34,13 @@ class Config:
     phys_weight = 1.0
 
     # newton or lagrangian
-    physics_mode = "lagrangian"
+    physics_mode = "newton"
 
     # logging
     print_every = 500
 
     # shooting method
     shooting_lr = 1e-2
-    shooting_epochs = 1500
+    shooting_epochs = 900
     shooting_steps = 400
     shooting_print_every = 300

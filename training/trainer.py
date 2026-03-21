@@ -37,11 +37,11 @@ class Trainer:
 
     def physics_loss(self, t):
         if self.cfg.physics_mode == "newton":
-            res_x, res_y = physics_residual(
+            res_x, res_y, res_z = physics_residual(
                 self.model, t, self.cfg.q, self.cfg.m, self.cfg.Bz
             )
         elif self.cfg.physics_mode == "lagrangian":
-            res_x, res_y = euler_lagrange_residual(
+            res_x, res_y, res_z = euler_lagrange_residual(
                 self.model, t, self.cfg.q, self.cfg.m, self.cfg.Bz
             )
         else:
@@ -50,7 +50,7 @@ class Trainer:
                 f"Use 'newton' or 'lagrangian'."
             )
 
-        return torch.mean(res_x**2) + torch.mean(res_y**2)
+        return torch.mean(res_x**2) + torch.mean(res_y**2) + torch.mean(res_z**2)
 
     def _log(self, message: str):
         print(message)

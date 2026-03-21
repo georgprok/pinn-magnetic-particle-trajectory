@@ -1,21 +1,21 @@
 Training log
 ================================================================================
-Physics mode: lagrangian
-Epoch     1 | Loss = 130.839783 | BC = 1.308240 | Phys = 0.015768
-Epoch   500 | Loss = 0.029407 | BC = 0.000002 | Phys = 0.029237
-Epoch  1000 | Loss = 0.003945 | BC = 0.000000 | Phys = 0.003942
-Epoch  1500 | Loss = 0.001969 | BC = 0.000000 | Phys = 0.001968
-Epoch  2000 | Loss = 0.000610 | BC = 0.000000 | Phys = 0.000609
-Epoch  2500 | Loss = 0.000301 | BC = 0.000002 | Phys = 0.000141
-Epoch  3000 | Loss = 0.001926 | BC = 0.000018 | Phys = 0.000104
-Epoch  3500 | Loss = 0.000097 | BC = 0.000000 | Phys = 0.000078
-Epoch  4000 | Loss = 0.000069 | BC = 0.000000 | Phys = 0.000069
-Epoch  4500 | Loss = 0.000063 | BC = 0.000000 | Phys = 0.000063
-Epoch  5000 | Loss = 0.000071 | BC = 0.000000 | Phys = 0.000057
-Epoch  5500 | Loss = 0.000062 | BC = 0.000000 | Phys = 0.000060
-Epoch  6000 | Loss = 0.000184 | BC = 0.000001 | Phys = 0.000083
-Epoch  6500 | Loss = 0.000073 | BC = 0.000000 | Phys = 0.000072
-Epoch  7000 | Loss = 0.003823 | BC = 0.000037 | Phys = 0.000089
-Epoch  7500 | Loss = 0.000075 | BC = 0.000000 | Phys = 0.000063
-Epoch  8000 | Loss = 0.000082 | BC = 0.000000 | Phys = 0.000056
-Epoch  8500 | Loss = 0.000054 | BC = 0.000000 | Phys = 0.000039
+Physics mode: newton
+Epoch     1 | Loss = 93.356133 | BC = 0.933396 | Phys = 0.016524
+Epoch   500 | Loss = 0.005308 | BC = 0.000000 | Phys = 0.005296
+Epoch  1000 | Loss = 0.001989 | BC = 0.000000 | Phys = 0.001987
+Epoch  1500 | Loss = 0.001915 | BC = 0.000012 | Phys = 0.000686
+Epoch  2000 | Loss = 0.000412 | BC = 0.000002 | Phys = 0.000244
+Epoch  2500 | Loss = 0.000073 | BC = 0.000000 | Phys = 0.000072
+Epoch  3000 | Loss = 0.000078 | BC = 0.000000 | Phys = 0.000078
+Epoch  3500 | Loss = 0.003337 | BC = 0.000033 | Phys = 0.000055
+Epoch  4000 | Loss = 0.000048 | BC = 0.000000 | Phys = 0.000043
+Epoch  4500 | Loss = 0.000486 | BC = 0.000004 | Phys = 0.000038
+Epoch  5000 | Loss = 0.000034 | BC = 0.000000 | Phys = 0.000033
+Epoch  5500 | Loss = 0.000044 | BC = 0.000000 | Phys = 0.000034
+Epoch  6000 | Loss = 0.000453 | BC = 0.000004 | Phys = 0.000045
+Epoch  6500 | Loss = 0.000091 | BC = 0.000000 | Phys = 0.000048
+Epoch  7000 | Loss = 0.000047 | BC = 0.000000 | Phys = 0.000041
+Epoch  7500 | Loss = 0.000658 | BC = 0.000006 | Phys = 0.000046
+Epoch  8000 | Loss = 0.000275 | BC = 0.000002 | Phys = 0.000044
+Epoch  8500 | Loss = 0.000081 | BC = 0.000001 | Phys = 0.000028
