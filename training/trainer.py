@@ -1,6 +1,7 @@
 import os
 import torch
 from physics.lorentz import physics_residual
+from physics.lagrangian import euler_lagrange_residual
 
 
 class Trainer:
@@ -35,9 +36,19 @@ class Trainer:
         return loss_start + loss_end
 
     def physics_loss(self, t):
-        res_x, res_y = physics_residual(
-            self.model, t, self.cfg.q, self.cfg.m, self.cfg.Bz
-        )
+        if self.cfg.physics_mode == "newton":
+            res_x, res_y = physics_residual(
+                self.model, t, self.cfg.q, self.cfg.m, self.cfg.Bz
+            )
+        elif self.cfg.physics_mode == "lagrangian":
+            res_x, res_y = euler_lagrange_residual(
+                self.model, t, self.cfg.q, self.cfg.m, self.cfg.Bz
+            )
+        else:
+            raise ValueError(
+                f"Unknown physics_mode: {self.cfg.physics_mode}. "
+                f"Use 'newton' or 'lagrangian'."
+            )
 
         return torch.mean(res_x**2) + torch.mean(res_y**2)
 
@@ -55,6 +66,8 @@ class Trainer:
         tT = torch.tensor(
             [[self.cfg.T]], dtype=torch.float32, device=device, requires_grad=True
         )
+
+        self._log(f"Physics mode: {self.cfg.physics_mode}")
 
         for epoch in range(1, self.cfg.epochs + 1):
             self.optimizer.zero_grad()

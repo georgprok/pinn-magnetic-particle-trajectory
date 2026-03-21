@@ -45,6 +45,7 @@ def main():
     cfg.device = device
 
     print(f"device: {device}")
+    print(f"physics_mode: {cfg.physics_mode}")
 
     os.makedirs("results", exist_ok=True)
 

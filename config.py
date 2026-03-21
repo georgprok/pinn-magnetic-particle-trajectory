@@ -26,18 +26,21 @@ class Config:
 
     # PINN training
     lr = 1e-3
-    epochs = 7500
+    epochs = 8500
     collocation_points = 256
 
     # loss weights
     bc_weight = 100.0
     phys_weight = 1.0
 
+    # newton or lagrangian
+    physics_mode = "lagrangian"
+
     # logging
     print_every = 500
 
     # shooting method
     shooting_lr = 1e-2
-    shooting_epochs = 1800
+    shooting_epochs = 1500
     shooting_steps = 400
     shooting_print_every = 300
