@@ -1,0 +1,7 @@
+PINN vs Shooting comparison
+================================================================================
+Physics mode: newton
+PINN initial velocity: vx0 = -0.000537, vy0 = 1.000178, vz0 = 0.635992
+Shooting initial velocity: vx0 = 0.001544, vy0 = 0.998460, vz0 = 0.500000
+PINN endpoint error: 1.481080e-03
+Shooting endpoint error: 2.146016e-01
